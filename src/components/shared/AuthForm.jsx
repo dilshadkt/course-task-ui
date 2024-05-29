@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link, redirect, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Axios from "../../config/Axios";
 import { jwtDecode } from "jwt-decode";
 const AuthForm = () => {

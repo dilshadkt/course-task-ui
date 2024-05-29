@@ -1,12 +1,13 @@
 import "./App.css";
 import Auth from "./pages/Auth";
-import { Routes, Route, redirect, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/Home";
 import AuthLayout from "./layouts/AuthLayout";
 import HomeLayout from "./layouts/HomeLayout";
 import ProtectedRoute from "./components/ProtectedRout";
 import AdminLayout from "./layouts/AdminLayout";
 import Dashborad from "./pages/Dashborad";
+import Courses from "./pages/Courses";
 function App() {
   const token = localStorage.getItem("token");
 
@@ -32,6 +33,7 @@ function App() {
         </Route>
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<Dashborad />} />
+          <Route path="courses" element={<Courses />} />
         </Route>
       </Routes>
     </div>
