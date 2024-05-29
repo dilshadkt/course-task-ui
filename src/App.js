@@ -1,15 +1,32 @@
+import { useContext, useEffect } from "react";
+import { Navigate, Route, Routes } from "react-router-dom";
 import "./App.css";
-import Auth from "./pages/Auth";
-import { Routes, Route, Navigate } from "react-router-dom";
-import Home from "./pages/Home";
+import ProtectedRoute from "./components/ProtectedRout";
+import Axios from "./config/Axios";
+import MyContext from "./context/MyContext";
+import AdminLayout from "./layouts/AdminLayout";
 import AuthLayout from "./layouts/AuthLayout";
 import HomeLayout from "./layouts/HomeLayout";
-import ProtectedRoute from "./components/ProtectedRout";
-import AdminLayout from "./layouts/AdminLayout";
-import Dashborad from "./pages/Dashborad";
+import Auth from "./pages/Auth";
 import Courses from "./pages/Courses";
+import Dashborad from "./pages/Dashborad";
+import Home from "./pages/Home";
 function App() {
   const token = localStorage.getItem("token");
+  const { setCourses, setEnrolled } = useContext(MyContext);
+  useEffect(() => {
+    Axios.get("course")
+      .then((res) => {
+        setCourses(res.data.courses);
+      })
+      .catch((err) => console.log(err));
+    Axios.get("enroll/enrolled")
+      .then((res) => {
+        console.log(res);
+        setEnrolled(res.data.enrolled_course);
+      })
+      .catch((err) => console.log(err));
+  }, [setCourses, setEnrolled]);
 
   return (
     <div className="">

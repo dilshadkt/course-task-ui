@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -7,30 +7,31 @@ const Navbar = () => {
     navigate("/auth/login");
     localStorage.clear();
   };
+  const [searchparams] = useSearchParams();
+  const filter = searchparams.get("filter");
+
   return (
-    <header class="bg-red-400 w-full ">
+    <header className="bg-red-400 w-full ">
       <div className="flex items-center justify-between py-4 md:py-8 max-w-screen-2xl mx-auto px-4 ">
         <Link to={"/"}>
           <h4 className="text-4xl font-bold text-indigo-500">Courses</h4>
         </Link>
-        <nav class="hidden gap-12 lg:flex">
+        <nav className="hidden gap-12 lg:flex">
           <Link
-            to={"/"}
-            class="text-lg font-semibold text-gray-600 transition duration-100 hover:text-indigo-500 active:text-indigo-700"
+            to={"/?filter=available courses"}
+            className={`text-lg font-semibold text-gray-600 transition duration-100 hover:text-indigo-500 ${
+              filter === "available courses" && "text-indigo-700"
+            }`}
           >
             Available Courses
           </Link>
           <Link
-            to={"/"}
-            class="inline-flex items-center gap-1 text-lg font-semibold text-indigo-500"
+            to={"/?filter=enrolled"}
+            className={`inline-flex items-center gap-1 text-lg font-semibold ${
+              filter === "enrolled" && "text-indigo-500"
+            }`}
           >
             Enrolled
-          </Link>
-          <Link
-            to={"/"}
-            class="text-lg font-semibold text-gray-600 transition duration-100 hover:text-indigo-500 active:text-indigo-700"
-          >
-            Wating
           </Link>
         </nav>
 
