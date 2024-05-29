@@ -1,17 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link, useLocation } from "react-router-dom";
+import { Link, redirect, useLocation, useNavigate } from "react-router-dom";
+import Axios from "../../config/Axios";
+import { jwtDecode } from "jwt-decode";
 const AuthForm = () => {
   const {
     register,
     reset,
-    watch,
     handleSubmit,
     formState: { errors },
   } = useForm();
   const { pathname } = useLocation();
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
   const signin = (data) => {
-    console.log(data);
+    setError(false);
+    Axios.post(`auth/${pathname.includes("signin") ? "signin" : "login"}`, data)
+      .then((res) => {
+        setError(false);
+        localStorage.setItem("token", res.data.token);
+        const token = res.data.token;
+        const decodedToken = jwtDecode(token);
+
+        if (pathname.includes("login") && decodedToken.userType === "admin") {
+          navigate("/admin");
+        } else {
+          navigate("/");
+        }
+        reset();
+      })
+      .catch((err) => {
+        setError(err.response.data.error);
+        console.log(err.response.data.error);
+      });
   };
   return (
     <section className="bg-white py-6 sm:py-8 lg:py-12">
@@ -90,6 +111,7 @@ const AuthForm = () => {
               />
             </div>
             <ul className="list-disc pl-5">
+              {error && <li className="text-sm  text-red-500 ">{error}</li>}
               {errors.name && (
                 <li className="text-sm  text-red-500 ">
                   {errors.name.message}

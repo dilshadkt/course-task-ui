@@ -5,3 +5,6 @@
 .flex-center {
   @apply flex items-center justify-center;
 }
+.btn-blue {
+  @apply bg-blue-500 text-white shadow-md;
+}
